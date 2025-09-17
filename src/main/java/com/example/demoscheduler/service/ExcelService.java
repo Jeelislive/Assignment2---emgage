@@ -16,14 +16,33 @@ public class ExcelService {
     public byte[] createSimpleExcel() throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Sample Timetable");
+
+        // Create header style
+        CellStyle headerStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        headerStyle.setFont(font);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+        // Create header row
         Row header = sheet.createRow(0);
-        header.createCell(0).setCellValue("Time");
-        header.createCell(1).setCellValue("Class");
-        header.createCell(2).setCellValue("Subject");
+        String[] headers = {"Time", "Class", "Subject"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = header.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
+
+        // Add sample data
         Row row = sheet.createRow(1);
-        row.createCell(0).setCellValue("08:00-09:00");
+        row.createCell(0).setCellValue("8:00 AM - 9:00 AM");
         row.createCell(1).setCellValue("Sample Class");
         row.createCell(2).setCellValue("Mathematics");
+
+        // Auto-size columns
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         workbook.write(out);
@@ -31,35 +50,68 @@ public class ExcelService {
         return out.toByteArray();
     }
 
-    public byte[] createProfessorTimetable(Professor professor, List<Timetable> personal, List<Timetable> cs, List<Timetable> it) throws IOException {
+    public byte[] createPersonalTimetableExcel(Professor professor, List<Timetable> personal) throws IOException {
         Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Personal Timetable");
 
-        // Personal Timetable
-        Sheet personalSheet = workbook.createSheet("Personal Timetable");
-        Row header = personalSheet.createRow(0);
-        header.createCell(0).setCellValue("Day");
-        header.createCell(1).setCellValue("Time");
-        header.createCell(2).setCellValue("Branch");
-        header.createCell(3).setCellValue("Subject");
+        // Create header style
+        CellStyle headerStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        headerStyle.setFont(font);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+        // Create header row
+        Row header = sheet.createRow(0);
+        String[] headers = {"Day", "Time", "Branch", "Subject"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = header.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
+
+        // Add data
         int rowNum = 1;
         for (Timetable entry : personal) {
-            Row row = personalSheet.createRow(rowNum++);
+            Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(entry.getScheduleDay());
             row.createCell(1).setCellValue(entry.getTimeSlot());
             row.createCell(2).setCellValue(entry.getBranch());
             row.createCell(3).setCellValue(entry.getSubject());
         }
 
+        // Auto-size columns
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        workbook.write(out);
+        workbook.close();
+        return out.toByteArray();
+    }
+
+    public byte[] createCSTimetableExcel() throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("CS Timetable");
+
+        // Create header style
+        CellStyle headerStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        headerStyle.setFont(font);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+        // Create header row
+        Row header = sheet.createRow(0);
+        String[] headers = {"Day", "8:00 AM - 9:00 AM", "9:00 AM - 10:00 AM", "10:00 AM - 11:00 AM", "11:00 AM - 12:00 PM", "12:00 PM - 1:00 PM", "1:00 PM - 2:00 PM"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = header.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
+
         // CS Students Timetable
-        Sheet csSheet = workbook.createSheet("CS Timetable");
-        header = csSheet.createRow(0);
-        header.createCell(0).setCellValue("Day");
-        header.createCell(1).setCellValue("8-9");
-        header.createCell(2).setCellValue("9-10");
-        header.createCell(3).setCellValue("10-11");
-        header.createCell(4).setCellValue("11-12");
-        header.createCell(5).setCellValue("12-1");
-        header.createCell(6).setCellValue("1-2");
         String[][] csTimetable = {
             {"Monday", "English", "-", "Mathematics", "Physics", "Computer Science", "Chemistry"},
             {"Tuesday", "English", "Physics", "Mathematics", "Physics", "Computer Science", "Chemistry"},
@@ -67,24 +119,46 @@ public class ExcelService {
             {"Thursday", "English", "Physics", "Mathematics", "Physics", "Computer Science", "Chemistry"},
             {"Friday", "English", "-", "Mathematics", "Physics", "Computer Science", "Chemistry"}
         };
-        rowNum = 1;
+
+        // Add data
+        int rowNum = 1;
         for (String[] rowData : csTimetable) {
-            Row row = csSheet.createRow(rowNum++);
+            Row row = sheet.createRow(rowNum++);
             for (int i = 0; i < rowData.length; i++) {
                 row.createCell(i).setCellValue(rowData[i]);
             }
         }
 
-        // IT Students Timetable
-        Sheet itSheet = workbook.createSheet("IT Timetable");
-        header = itSheet.createRow(0);
-        header.createCell(0).setCellValue("Day");
-        header.createCell(1).setCellValue("8-9");
-        header.createCell(2).setCellValue("9-10");
-        header.createCell(3).setCellValue("10-11");
-        header.createCell(4).setCellValue("11-12");
-        header.createCell(5).setCellValue("12-1");
-        header.createCell(6).setCellValue("1-2");
+        // Auto-size columns
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        workbook.write(out);
+        workbook.close();
+        return out.toByteArray();
+    }
+
+    public byte[] createITTimetableExcel() throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("IT Timetable");
+
+        // Create header style
+        CellStyle headerStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        headerStyle.setFont(font);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+        Row header = sheet.createRow(0);
+        String[] headers = {"Day", "8:00 AM - 9:00 AM", "9:00 AM - 10:00 AM", "10:00 AM - 11:00 AM", "11:00 AM - 12:00 PM", "12:00 PM - 1:00 PM", "1:00 PM - 2:00 PM"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = header.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
+
         String[][] itTimetable = {
             {"Monday", "English", "Physics", "Physics", "Mathematics", "Chemistry", "Computer Science"},
             {"Tuesday", "English", "Mathematics", "Physics", "Mathematics", "Chemistry", "Computer Science"},
@@ -92,12 +166,19 @@ public class ExcelService {
             {"Thursday", "English", "Mathematics", "Physics", "Mathematics", "Chemistry", "Computer Science"},
             {"Friday", "English", "Physics", "Physics", "Mathematics", "Chemistry", "Computer Science"}
         };
-        rowNum = 1;
+
+        // add data
+        int rowNum = 1;
         for (String[] rowData : itTimetable) {
-            Row row = itSheet.createRow(rowNum++);
+            Row row = sheet.createRow(rowNum++);
             for (int i = 0; i < rowData.length; i++) {
                 row.createCell(i).setCellValue(rowData[i]);
             }
+        }
+
+        // Auto-size columns
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
         }
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
