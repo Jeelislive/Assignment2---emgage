@@ -33,7 +33,7 @@ build/
 .vscode/
 
 # Exclude specific files
-src/main/java/com/example/demoscheduler/config/SchedulerConfig.java
-src/main/java/com/example/demoscheduler/scheduler/ProfessorTimetableScheduler.java
-src/main/java/com/example/demoscheduler/service/ExcelService.java
-src/main/java/com/example/demoscheduler/service/TimetableService.java
+# src/main/java/com/example/demoscheduler/config/SchedulerConfig.java
+# src/main/java/com/example/demoscheduler/scheduler/ProfessorTimetableScheduler.java
+# src/main/java/com/example/demoscheduler/service/ExcelService.java
+# src/main/java/com/example/demoscheduler/service/TimetableService.java

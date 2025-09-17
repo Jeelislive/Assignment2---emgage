@@ -40,7 +40,7 @@ public class TimetableService {
             {"Friday", "1:00 PM - 2:00 PM", "IT", "Mathematics", "Professor1"}
         };
 
-        // professor 2 (12-)
+        // professor 2  (12-6)
         String[][] prof2Schedule = {
             {"Monday", "12:00 PM - 1:00 PM", "CS", "Computer Science", "Professor2"},
             {"Monday", "1:00 PM - 2:00 PM", "IT", "Chemistry", "Professor2"},
