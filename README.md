@@ -20,18 +20,19 @@ Below are some preview screenshots of the application:
   
   ## Configure Gmail
   
-  Generate an app-specific password:
-      Go to Google Security
-   → 2-Step Verification → App passwords.
-   
-  -> Update src/main/resources/application.properties:
-  
-  1.spring.mail.username=your-email@gmail.com
-  2.spring.mail.password=<your-16-character-password>
+ 1. **Generate an App Password**  
+   Go to [Google Security](https://myaccount.google.com/security) → **2-Step Verification** → **App Passwords**.
+
+2. **Update Properties**  
+   Edit `src/main/resources/application.properties`:
+   ```properties
+   spring.mail.username=your-email@gmail.com
+   spring.mail.password=<your-16-character-password>
+
   
   3️⃣ Build and Run
-  mvn clean install
-  mvn spring-boot:run
+    1.mvn clean install
+    2.mvn spring-boot:run
   
   
   ## Features
